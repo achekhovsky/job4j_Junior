@@ -58,6 +58,14 @@ public class SimpleArrayTest {
 		assertThat(testArray.get(1), is("4"));
 	}
 	
+	@Test
+	public void ifAddTwoAndDeleteOneThenSizeIsOne() {
+		testArray.add("1");
+		testArray.add("2");
+		testArray.delete(0);
+		assertThat(testArray.getSize(), is(1));
+	}
+	
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void ifGetIndexIsOutOfRange() {
 		testArray.get(3);
@@ -84,5 +92,13 @@ public class SimpleArrayTest {
 			expected.append(itr.next());
 		}
 		assertThat(expected.toString(), is("234"));
+	}
+	
+	@Test
+	public void ifContainThenTrueElseFalse() {
+		testArray.add("2");
+		testArray.add("3");
+		assertThat(testArray.contain("2"), is(true));
+		assertThat(testArray.contain("1"), is(false));
 	}
 }

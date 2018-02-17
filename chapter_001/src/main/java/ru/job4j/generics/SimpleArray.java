@@ -3,6 +3,14 @@ package ru.job4j.generics;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * A store for objects with the ability to add, change and delete items.
+ * @author achekhovsky
+ * In this version added ability to get the length of array and check the array for the content of the specified element
+ * @version 1.1
+ * @since 1.0
+ * @param <T> type of objects
+ */
 public class SimpleArray<T> implements Iterable<T> {
 	
 	private Object[] ar;
@@ -71,6 +79,30 @@ public class SimpleArray<T> implements Iterable<T> {
 	public T get(int index) {
 		checkIndex(index);
 		return (T) ar[index];
+	}
+	
+	/**
+	 * Checks if the array contains the specified element
+	 * @param item - item to search  for
+	 * @return true if contain, otherwise false 
+	 */
+	public boolean contain(T item) {
+		boolean result = false;
+		for (int i = 0; i < index; i++) {
+			if (ar[i].equals(item)) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Return array size
+	 * @return array size
+	 */
+	public int getSize() {
+		return index;
 	}
 
 	/* 
