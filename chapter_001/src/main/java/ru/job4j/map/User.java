@@ -23,6 +23,19 @@ public class User {
 	}
 	
 	/* 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
+		result = prime * result + children;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	
+	/* 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
