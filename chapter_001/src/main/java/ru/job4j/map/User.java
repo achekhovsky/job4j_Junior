@@ -22,6 +22,19 @@ public class User {
 		this.birthday = bd;
 	}
 	
+	/* 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
+		result = prime * result + children;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
 	/**
 	 * Returns the birthday of the user
 	 * @return the users's birthday
