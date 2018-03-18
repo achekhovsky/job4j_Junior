@@ -77,6 +77,29 @@ public class SimpleTreeImplementation<E extends Comparable<E>> implements Simple
 	}
 	
 	/**
+	 * Check the tree for binary 
+	 * @return true if each of the nodes does not have more than 2 children
+	 */
+	public boolean isBinary() {
+		Queue<Node<E>> nodes = new LinkedList<>();
+		Node<E> currentNode;
+		boolean result = true;
+		nodes.offer(this.root);
+		while (!nodes.isEmpty() && result) {
+			currentNode = nodes.poll();
+			if (currentNode.leaves().size() <= 2) {
+				for (Node<E> node : currentNode.leaves()) {
+					nodes.offer(node);
+				}
+			} else {
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	
+	/**
 	 * Simple iterator for SimpleTree
 	 * @author achekhovsky
 	 */

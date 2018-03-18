@@ -70,6 +70,24 @@ public class SimpleTreeImplementationTest {
         assertThat(count, is(6));
     }
 
+	@Test
+	public void whenIsBinaryThenTrue() {
+		tree.add(1, 2);
+		tree.add(2, 5);
+		tree.add(2, 4);
+		assertThat(tree.add(3, 6), is(false));
+		assertThat(tree.isBinary(), is(true));
+	}
+	
+	@Test
+	public void whenIsNotBinaryThenFalse() {
+		tree.add(1, 2);
+		tree.add(2, 5);
+		tree.add(2, 4);
+		assertThat(tree.add(2, 6), is(true));
+		assertThat(tree.isBinary(), is(false));
+	}
+
     @Test
     public void whenSevenElFindNotExistThenOptionEmpty() {
         tree.add(1, 2);
