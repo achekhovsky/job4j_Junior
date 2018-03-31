@@ -1,6 +1,7 @@
 package ru.job4j.wordscounter;
 
 import java.nio.CharBuffer;
+import java.util.concurrent.Semaphore;
 
 /**
  * Подсчет количества слов и пробелов в тексте
@@ -8,35 +9,15 @@ import java.nio.CharBuffer;
  * @version 0.1
  * @since 0.1
  */
-public class WordsCounter {
+public class WordsCounter implements Runnable {
+	
 	private String stringForCount;
+	private Semaphore sem;
 	
-	public static void main(String[] args) {
-		WordsCounter wc = new WordsCounter("Like a byte buffer, a char buffer is either"
-				+ " direct or non-direct. A char buffer created via the "
-				+ "wrap methods of this class will be non-direct. A char "
-				+ "buffer created as a view of a byte buffer will be "
-				+ "direct if, and only if, the byte buffer itself is direct. "
-				+ "Whether or not a char buffer is direct may be determined "
-				+ "by invoking the isDirect method.");
-				Thread spacesThread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						wc.spacesCounter();
-					}
-				}, "Spaces counter");
-				Thread wordsThread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						wc.wordsCounter();				
-					}
-				}, "Words counter");
-				spacesThread.start();
-				wordsThread.start();
-	}
-	
-	public WordsCounter(String str) {
+	public WordsCounter(Semaphore sem, String str) {
 		this.stringForCount = str;
+		this.sem = sem;
+		new Thread(this).start();
 	}
 	
 	/**
@@ -78,4 +59,10 @@ public class WordsCounter {
 		return count;
 	}
 
+	@Override
+	public void run() {
+		this.wordsCounter();
+		this.spacesCounter();
+		sem.release();
+	}
 }
