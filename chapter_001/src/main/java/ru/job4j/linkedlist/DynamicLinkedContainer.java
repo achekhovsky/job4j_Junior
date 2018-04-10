@@ -3,6 +3,14 @@ package ru.job4j.linkedlist;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * Linked container for objects with the ability to add, get etc.
@@ -11,17 +19,21 @@ import java.util.NoSuchElementException;
  * @since 1.0
  * @param <E> type of objects
  */
+@ThreadSafe
 public class DynamicLinkedContainer<E> implements Iterable<E> {
 	private int size = 0;
+	@GuardedBy("this")
 	private Node<E> firstElement;
+	@GuardedBy("this")
 	private Node<E> lastElement;
+	@GuardedBy("this")
     private int modCount = 0;
    
     /**
      * Link the specified element to the end of this container.
      * @param element element to be appended to this container
      */
-	public void add(E element) {
+	public synchronized void add(E element) {
 		if (firstElement == null) {
 			this.firstInit(element);
 		} else {
@@ -59,12 +71,12 @@ public class DynamicLinkedContainer<E> implements Iterable<E> {
     /**
      * Unlink the specified element from the end of this container.
      */
-	public void unlinkLast() {
+	public synchronized void unlinkLast() {
 		if (size > 1) {
 			this.lastElement = this.lastElement.prev;
 			this.lastElement.next = null;
 			size--;
-			modCount++;
+			modCount++;				
 		} else {
 			this.unlinkFirst(); 
 		}
@@ -75,7 +87,7 @@ public class DynamicLinkedContainer<E> implements Iterable<E> {
      * Link the specified element to the head of this container.
      * @param element element to be added to this container
      */
-	public void linkFirst(E element) {
+	public synchronized void linkFirst(E element) {
 		if (size > 0) {
 			this.firstElement.prev = new Node<E>(null, element, this.firstElement);
 			this.firstElement = this.firstElement.prev;			
@@ -86,11 +98,10 @@ public class DynamicLinkedContainer<E> implements Iterable<E> {
 		modCount++;
 	}
 	
-	//TODO
     /**
      * Unlink the specified element from the head of this container.
      */
-	public void unlinkFirst() {
+	public synchronized void unlinkFirst() {
 		if (size > 0) {
 			if (this.firstElement.next == null) {
 				this.firstElement = null;
@@ -110,7 +121,7 @@ public class DynamicLinkedContainer<E> implements Iterable<E> {
      * @throws NullPointerException if container is empty
      * @throws IndexOutOfBoundsException if index is out of bounds
      */
-	public E get(int index) {
+	public synchronized E get(int index) {
 		Node<E> resultNode = this.firstElement;
 		if (index < size &&  index > 0) {
 			for (int i = 1; i <= index; i++) {
@@ -164,7 +175,10 @@ public class DynamicLinkedContainer<E> implements Iterable<E> {
 		 */
 		@Override
 		public E next() {
-			this.checkModification(DynamicLinkedContainer.this.modCount);
+			synchronized (DynamicLinkedContainer.this) {
+				this.checkModification(DynamicLinkedContainer.this.modCount);	
+			}
+			
 			if (this.hasNext()) {
 				if (element == null) {
 					element = DynamicLinkedContainer.this.firstElement;

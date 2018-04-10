@@ -3,8 +3,10 @@ package ru.job4j.list;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * Resize container for objects with the ability to add and get items.
@@ -13,12 +15,16 @@ import java.util.NoSuchElementException;
  * @since 1.0
  * @param <T> type of objects
  */
+@ThreadSafe
 public class DynamicContainer<E> implements Iterable<E> {
     private static final int DEFAULT_CAPACITY = 3;
     private static final Object[] EMPTY_CONTAINER = {};
+    @GuardedBy("this")
     private Object[] elementBox; 
     private int size;
+    @GuardedBy("this")
     private int index = 0;
+    @GuardedBy("this")
     private int modCount = 0;
     /**
      * Constructs an empty list with the specified initial capacity.
@@ -53,7 +59,7 @@ public class DynamicContainer<E> implements Iterable<E> {
      * @param e element to be appended to this container
      * @return true if success
      */
-    public boolean add(E e) {
+    public synchronized boolean add(E e) {
         this.checkCapacity();
         this.modCount++;
         elementBox[index++] = e;
@@ -67,7 +73,7 @@ public class DynamicContainer<E> implements Iterable<E> {
 	 * @throws IndexOutOfBoundsException if index is out of range
 	 */
 	@SuppressWarnings("unchecked")
-    public E get(int inx) {
+    public synchronized E get(int inx) {
     	this.checkIndex(inx);
     	return (E) elementBox[inx];
     }
@@ -76,7 +82,7 @@ public class DynamicContainer<E> implements Iterable<E> {
 	 * Return container size
 	 * @return container size
 	 */
-	public int getSize() {
+	public synchronized int getSize() {
 		return elementBox.length;
 	}
     
@@ -154,7 +160,9 @@ public class DynamicContainer<E> implements Iterable<E> {
 		 */
 		@Override
 		public E next() {
-			this.checkModification(DynamicContainer.this.modCount);
+			synchronized (DynamicContainer.this) {
+				this.checkModification(DynamicContainer.this.modCount);	
+			}
 			if (this.hasNext()) {
 				return (E) DynamicContainer.this.get(this.index++);	
 			} else {
