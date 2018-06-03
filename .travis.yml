@@ -15,3 +15,10 @@ notifications:
       - ringrabbit@rambler.ru
     on_success: never # default: change
     on_failure: always # default: always
+
+#Подключение и насторйка postgreslq
+services:
+        - postgresql
+before_script:
+      - psql -c "CREATE DATABASE j4jcui;" -U postgres
+      - psql -c "CREATE USER Alex WITH PASSWORD '123';" -U postgres 

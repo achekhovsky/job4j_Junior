@@ -1,0 +1,19 @@
+<project>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>chapter_003</artifactId>
+   <version>1.0</version>
+   <packaging>jar</packaging>
+   <parent>
+       <groupId>ru.job4j</groupId>
+       <artifactId>Junior</artifactId>
+       <version>1.0</version>
+   </parent>
+   <dependencies>
+<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+		<dependency>
+    		<groupId>postgresql</groupId>
+    		<artifactId>postgresql</artifactId>
+    		<version>9.1-901-1.jdbc4</version>
+	</dependency>
+	</dependencies>
+</project>

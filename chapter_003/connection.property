@@ -1,0 +1,5 @@
+#Connection properties
+#Tue May 29 20:35:32 MSK 2018
+user=Alex
+password=123
+url=jdbc\:postgresql\://localhost\:8924/j4jcui
