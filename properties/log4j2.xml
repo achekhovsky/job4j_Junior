@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" strict="true"
+	name="XMLConfigTest">
+	<Properties>
+		<Property name="filename">vacancies.log</Property>
+	</Properties>
+
+	<Appenders>
+		<Appender type="Console" name="STDOUT" target="SYSTEM_OUT">
+			<Layout type="PatternLayout">
+				<Pattern>%d %p %C{1.} [%t] %m</Pattern>
+			</Layout>
+		</Appender>
+		
+		<Appender type="File" name="File" fileName="${filename}" append="false">
+			<Layout type="PatternLayout">
+				<Pattern>%m%n</Pattern>
+			</Layout>
+			<Filter type="ThresholdFilter" level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+		</Appender>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="ru.job4j.jdbc.htmlparser.VacanciesStore" level="info"
+			additivity="false">
+			<AppenderRef ref="File" />
+			<AppenderRef ref="STDOUT" />
+		</Logger>	
+
+		<Root level="warn">
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+
+</Configuration>
