@@ -8,9 +8,35 @@
 		<servlet-class>ru.job4j.servlets.http.UsersSvt</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>UsersStore</servlet-name>
+		<servlet-class>ru.job4j.servlets.servlet.UsersSvt</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		<servlet>
+		<servlet-name>AddUser</servlet-name>
+		<servlet-class>ru.job4j.servlets.servlet.UsersAdd</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>UpdateUser</servlet-name>
+		<servlet-class>ru.job4j.servlets.servlet.UsersUpdate</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>UsersSvt</servlet-name>
 		<url-pattern>/users</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>UsersStore</servlet-name>
+		<url-pattern>/store</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AddUser</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateUser</servlet-name>
+		<url-pattern>/update</url-pattern>
 	</servlet-mapping>
 </web-app>
