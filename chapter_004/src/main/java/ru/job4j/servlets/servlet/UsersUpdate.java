@@ -36,7 +36,8 @@ public class UsersUpdate extends HttpServlet {
 		out.println("<body><br>");
 		out.println("<h3 style=\" text-align: center;\"><u>Update user</u></h3>");
 		out.println("<div style=\"text-align: center;\">");
-		out.println("<form name=\"user\" action=\"/Job4JWebApp/store\" method=\"POST\" id=\"userForm\">");
+//		out.println("<form name=\"user\" action=\"/Job4JWebApp/store\" method=\"POST\" id=\"userForm\">");
+		out.println("<form name=\"user\" action=\"/Job4JWebApp/pages/Users.jsp\" method=\"POST\" id=\"userForm\">");
 		out.println("<div style=\"text-align: center;\">User id:</div>");
 		out.println("<input name=\"userid\" type=\"text\" readonly=\"readonly\" value=\"" + request.getParameter("userid") + "\"><br>");
 		out.println("User name:<br>");

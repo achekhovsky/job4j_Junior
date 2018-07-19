@@ -112,7 +112,7 @@ public class ValidateService {
 		return user;
 	}
 	
-	enum Actions {
+	public enum Actions {
 		ADD, DELETE, UPDATE;
 	}
 	
