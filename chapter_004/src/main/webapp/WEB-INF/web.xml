@@ -39,4 +39,11 @@
 		<servlet-name>UpdateUser</servlet-name>
 		<url-pattern>/update</url-pattern>
 	</servlet-mapping>
+	
+	<resource-ref>
+	  <description>DB Connection</description>
+      <res-ref-name>jdbc/SQLite</res-ref-name>
+      <res-type>javax.sql.DataSource</res-type>
+      <res-auth>Store</res-auth>
+	</resource-ref>
 </web-app>

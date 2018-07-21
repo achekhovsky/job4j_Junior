@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
  */
 public class ValidateService {
 	private static final ValidateService V_SERVICE = new ValidateService();
-	private final Store logic = MemoryStore.getInstance();
+	//private final Store logic = MemoryStore.getInstance();
+	private final Store logic = SQLStore.getInstance();
 	private final ActionsManager disp;
 	
 	private ValidateService() {
