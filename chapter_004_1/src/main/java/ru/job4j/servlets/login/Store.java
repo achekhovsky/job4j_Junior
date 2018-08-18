@@ -8,4 +8,5 @@ public interface Store {
 	boolean delete(User usr);
 	List<User> findAll();
 	User findById(int id);
+	User authenticateUser(String name, String password);
 }

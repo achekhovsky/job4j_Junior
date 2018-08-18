@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+form {
+  position: fixed;
+  top: 35%;
+  left: 43%;
+}
+
+button {
+  float: right;
+}

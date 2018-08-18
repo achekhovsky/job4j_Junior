@@ -17,14 +17,19 @@ public class UsersAddController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	       response.setContentType("text/html");
-	       request.getRequestDispatcher(response.encodeRedirectURL("/WEB-INF/views/UsersAdd.jsp")).forward(request, response);
+			if (request.getParameter("password") != null 
+					&& request.getParameter("passwordConfirm") != null
+					&& request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
+				request.getRequestDispatcher(response.encodeRedirectURL("/main")).forward(request, response);
+			} else {
+				request.getRequestDispatcher(response.encodeRedirectURL("/WEB-INF/views/UsersAdd.jsp")).forward(request, response);
+			}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -1,39 +1,38 @@
 package ru.job4j.servlets.login;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class UsersSvt
+ * Servlet implementation class LogoutController
  */
-public class UsersController extends HttpServlet {
+public class LogoutController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final ValidateService vService = ValidateService.getInstance();
        
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LogoutController() {
+        super();
+    }
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        request.setAttribute("users", vService.findAll());
-        request.getRequestDispatcher(response.encodeRedirectURL("/WEB-INF/views/UsersView.jsp")).forward(request, response);
+		response.sendRedirect(response.encodeRedirectURL(request.getServletContext().getContextPath() + "/"));
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = request.getParameter("action");
-		vService.doAction(ValidateService.Actions.valueOf(action), 
-				request.getParameter("userid"),
-				request.getParameter("username"),
-				request.getParameter("useremail"),
-				request.getParameter("rolename"),
-				request.getParameter("password"));
+		if (request.getParameter("logout").equals("logout")) {
+			request.getSession().removeAttribute("login");
+		}
 		doGet(request, response);
 	}
 

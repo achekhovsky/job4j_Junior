@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class ValidateService {
+	private static final Logger LOG = Logger.getLogger(ValidateService.class.getName());
 	private static final ValidateService V_SERVICE = new ValidateService();
 	private final Store logic = SQLStore.getInstance();
 	private final ActionsManager disp;
@@ -78,6 +80,19 @@ public class ValidateService {
 	}
 	
 	/**
+	 * List all users names from the store
+	 * @return
+	 */
+	public String[] getAllNames() {
+		List<User> users = this.findAll();
+		String[] names = new String[users.size()];
+		for (int i = 0; i < users.size(); i++) { 
+			names[i] = users.get(i).getName();
+		}
+		return names;
+	}
+	
+	/**
 	 * Find user by id
 	 * @param id
 	 * @return
@@ -87,14 +102,26 @@ public class ValidateService {
 	}
 	
 	/**
-	 * Perform the specified action using the parameters: id, name, email
+	 * User authentication
+	 * @param name
+	 * @param password
+	 * @return
+	 */
+	public User authenticateUser(String name, String password) {
+		return logic.authenticateUser(name, password);
+	}
+	
+	/**
+	 * Perform the specified action using the parameters: id, name, email, roleName, password
 	 * @param act one of the actions listed in the class ValidateService.Actions
 	 * @param id
 	 * @param name
 	 * @param email
+	 * @param roleName
+	 * @param password
 	 */
-	public void doAction(ValidateService.Actions act, String id, String name, String email) {
-		this.disp.manage(act, this.validateParams(id, name, email));
+	public void doAction(ValidateService.Actions act, String id, String name, String email, String roleName, String password) {
+		this.disp.manage(act, this.validateParams(id, name, email, roleName, password));
 	}
 	
 	/**
@@ -102,12 +129,14 @@ public class ValidateService {
 	 * @param id
 	 * @param name
 	 * @param email
+	 * @param roleName
+	 * @param password
 	 * @return a new user if its parameters match the validation conditions otherwise null
 	 */
-	private User validateParams(String id, String name, String email) {
+	private User validateParams(String id, String name, String email, String roleName, String password) {
 		User user = null;
 		if (Pattern.matches("\\d+", id) && Pattern.matches("\\S*", email)) {
-			user = new User(Integer.parseInt(id), name, email);
+			user = new User(Integer.parseInt(id), name, email, roleName, password);
 		}
 		return user;
 	}

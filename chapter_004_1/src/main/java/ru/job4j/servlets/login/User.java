@@ -7,12 +7,16 @@ public class User {
 	private final LocalDate createDate;
 	private String name;
 	private String email;
+	private String password;
+	private String roleName;
 	
-	public User(int id, String name, String email) {
+	public User(int id, String name, String email, String roleName, String password) {
 		this.id = id;
 		this.createDate = LocalDate.now();
 		this.name = name;
 		this.email = email;
+		this.roleName = roleName;
+		this.password = password;
 	}
 
 	public String getName() {
@@ -38,6 +42,35 @@ public class User {
 	public LocalDate getCreateDate() {
 		return createDate;
 	}
+	
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public String getRoleName() {
+		return roleName;
+	}
+
+	/**
+	 * @param role the role to set
+	 */
+	public void setRoleName(String role) {
+		this.roleName = role;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

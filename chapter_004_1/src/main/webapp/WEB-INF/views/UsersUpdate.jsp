@@ -2,7 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:url value="/" var="encodedMainUrl"/>
+<c:url value="/main" var="encodedMainUrl"/>
+<c:url value="/logout" var="encodedLogoutUrl"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,12 @@
 </style>
 </head>
 <body>
-	<br>
+    <div style="float: right; position: relative; font-size: small; text-align: center;">
+    	<form action="${encodedLogoutUrl}" method=POST>
+    		${login.name} [${loginRole.name}]
+			<button name="logout" value="logout" type="submit">Logout</button>
+		</form>
+    </div>
 	<h3 style="text-align: center;">
 		<u>Update user</u>
 	</h3>
