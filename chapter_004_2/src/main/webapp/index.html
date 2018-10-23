@@ -35,7 +35,7 @@
 				<textarea class="form-control" rows="5" id="desc"></textarea>
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-default" onclick="findEmptyInputs(event)" id="btn">Submit</button>
+				<button type="button" class="btn btn-default" onclick="findEmptyInputs(event)" id="btn">Submit</button>
 			</div>
 		</form>
 	</div>
@@ -43,7 +43,7 @@
 	<div class="container" align="center">
    		<h2><u>Users Table</u></h2>
   		<p><i>This table displays information about users</i></p><br/>  
-		<table class="table table-hover text-center">
+		<table id="tbl" class="table table-hover text-center">
 			<thead>
 				<tr>
 					<th class="text-center">Name</th>
@@ -70,6 +70,11 @@
 			</tbody>
 		</table>
 	</div>
-
+	<script type="text/javascript">
+		btn.addEventListener("click",
+				function(e) {if(!findEmptyInputs(e)) {
+					addRow(tbl, usr.value, lname.value, desc.value);}
+				}, true);
+		</script>
 </body>
 </html>
