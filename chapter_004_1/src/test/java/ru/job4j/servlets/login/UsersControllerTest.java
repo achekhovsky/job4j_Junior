@@ -39,7 +39,7 @@ public class UsersControllerTest {
 		//This allows to test the ValidateService class methods that are called by the UsersController servlet.
 /*		vService = mock(ValidateService.class);
 		setMockedSingleton(vService);*/
-		usr = new User(1, "name", "mail", "role", "123");
+		usr = new User(1, "name", "mail", "", "", "role", "123");
 		usrCtrl = new UsersController();
 		
 	}

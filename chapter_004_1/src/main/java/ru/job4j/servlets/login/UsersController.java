@@ -28,12 +28,10 @@ public class UsersController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
-		vService.doAction(ValidateService.Actions.valueOf(action), 
-				request.getParameter("userid"),
-				request.getParameter("username"),
-				request.getParameter("useremail"),
-				request.getParameter("rolename"),
-				request.getParameter("password"));
+		if (action != null) {
+			User usr = new User(Integer.parseInt(request.getParameter("userid")), request.getParameter("username"), request.getParameter("useremail"), request.getParameter("usercountry"), request.getParameter("usercity"), request.getParameter("rolename"), request.getParameter("password"));
+			vService.doAction(ValidateService.Actions.valueOf(action), usr);
+		}
 		doGet(request, response);
 	}
 

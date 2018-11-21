@@ -117,11 +117,13 @@ public class ValidateService {
 	 * @param id
 	 * @param name
 	 * @param email
+	 * @param country
+	 * @param city
 	 * @param roleName
 	 * @param password
 	 */
-	public void doAction(ValidateService.Actions act, String id, String name, String email, String roleName, String password) {
-		this.disp.manage(act, this.validateParams(id, name, email, roleName, password));
+	public void doAction(ValidateService.Actions act, User usr) {
+		this.disp.manage(act, this.validateParams("" + usr.getId(), usr.getName(), usr.getEmail(), usr.getCountry(), usr.getCity(), usr.getRoleName(), usr.getPassword()));
 	}
 	
 	/**
@@ -129,14 +131,16 @@ public class ValidateService {
 	 * @param id
 	 * @param name
 	 * @param email
+ 	 * @param country
+	 * @param city
 	 * @param roleName
 	 * @param password
 	 * @return a new user if its parameters match the validation conditions otherwise null
 	 */
-	private User validateParams(String id, String name, String email, String roleName, String password) {
+	private User validateParams(String id, String name, String email, String country, String city, String roleName, String password) {
 		User user = null;
 		if (Pattern.matches("\\d+", id) && Pattern.matches("\\S*", email)) {
-			user = new User(Integer.parseInt(id), name, email, roleName, password);
+			user = new User(Integer.parseInt(id), name, email, country, city, roleName, password);
 		}
 		return user;
 	}

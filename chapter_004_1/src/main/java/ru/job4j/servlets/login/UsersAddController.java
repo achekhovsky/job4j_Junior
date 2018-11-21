@@ -1,6 +1,8 @@
 package ru.job4j.servlets.login;
 
 import java.io.IOException;
+import java.util.Enumeration;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ public class UsersAddController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	       response.setContentType("text/html");
+	       //response.setContentType("text/html");
 			if (request.getParameter("password") != null 
 					&& request.getParameter("passwordConfirm") != null
 					&& request.getParameter("password").equals(request.getParameter("passwordConfirm"))) {
@@ -32,5 +34,4 @@ public class UsersAddController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

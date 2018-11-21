@@ -7,14 +7,18 @@ public class User {
 	private final LocalDate createDate;
 	private String name;
 	private String email;
+	private String country;
+	private String city;
 	private String password;
 	private String roleName;
 	
-	public User(int id, String name, String email, String roleName, String password) {
+	public User(int id, String name, String email, String country, String city, String roleName, String password) {
 		this.id = id;
 		this.createDate = LocalDate.now();
 		this.name = name;
 		this.email = email;
+		this.country = country;
+		this.city = city;
 		this.roleName = roleName;
 		this.password = password;
 	}
@@ -33,6 +37,34 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	/**
+	 * @return the country
+	 */
+	public String getCountry() {
+		return country;
+	}
+
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	/**
+	 * @return the city
+	 */
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public int getId() {

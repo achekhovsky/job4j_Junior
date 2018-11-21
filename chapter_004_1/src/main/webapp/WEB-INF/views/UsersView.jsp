@@ -17,32 +17,53 @@
 <style type="text/css">
 <%@ include file="../css/Store.css"%>
 </style>
+	<script type="text/javascript">
+    	<%@include file="/WEB-INF/js/jquery-3.3.1.min.js"%>
+	</script>
+	<style type="text/css">
+		<%@ include file="/bootstrap/css/bootstrap.min.css" %>
+	</style>
+	<script type="text/javascript">
+   		<%@include file="/bootstrap/js/bootstrap.js"%>
+	</script>
 </head>
 <body>
     <div style="float: right; position: relative; font-size: small; text-align: center;">
     	<form action="${encodedLogoutUrl}" method=POST>
     		${login.name} [${loginRole.name}]
-			<button name="logout" value="logout" type="submit">Logout</button>
+			<button class="btn btn-sm btn-link" name="logout" value="logout" type="submit">Logout</button>
 		</form>
     </div>
-	<h3 style="text-align: center;">
-		<u>Users store</u>
-	</h3>
-	<table style="width: 100%; height: 64px;" border="0">
+	<div class="row align-items-center align-self-center justify-content-center">
+	<div class="col-12 col-md-8">
+	<p></p>
+	<h4 class="h4 text-center mb-4 font-weight-normal">Users store</h3>
+	<table class="table table-borderless table-hover text-center table-sm">
+			<thead class="table-sm border-bottom">
+				<tr>
+					<th class="text-center">id</th>
+					<th class="text-center">create date</th>
+					<th class="text-center">name</th>
+					<th class="text-center">email</th>
+					<th class="text-center">country</th>
+					<th class="text-center">city</th>
+					<th class="text-center"></th>
+					<th class="text-center">
+		<form action="${encodedAddUrl}" method=GET>
+		<c:choose>
+			<c:when test="${loginRole.rights[2] == 1}">
+					<button class="btn badge badge-pill badge-success" name="Add" value="ADD" type="submit" data-toggle="tooltip" data-placement="top" title="Add new user">Add</button>
+			</c:when>
+			<c:otherwise>
+					<button class="btn badge badge-pill badge-secondary" disabled name="Add" value="ADD" type="submit" data-toggle="tooltip" data-placement="top" title="Add new user">Add</button>
+			</c:otherwise>
+		</c:choose>
+		</form>
+				</th>
+					
+				</tr>
+			</thead>
 		<tbody>
-			<tr>
-				<td style="text-align: center;"><b>id<br>
-				</b></td>
-				<td style="text-align: center; width: 455.5px;"><b>create
-						date<br>
-				</b></td>
-				<td style="text-align: center; width: 229.05px;"><b>name<br>
-				</b></td>
-				<td style="text-align: center;"><b>email<br>
-				</b></td>
-				<td><br></td>
-				<td><br></td>
-			</tr>
 			<c:forEach var="usr" items="${users}">
 				<tr>
 					<form name="users" action="${encodedMainUrl}" method="POST">
@@ -57,14 +78,20 @@
 						<td style="text-align: center;"><input name="useremail"
 							value="${usr.email}" type="hidden"> <c:out
 								value="${usr.email}"></c:out><br></td>
+						<td style="text-align: center;"><input name="usercountry"
+							value="${usr.country}" type="hidden"> <c:out
+								value="${usr.country}"></c:out><br></td>
+						<td style="text-align: center;"><input name="usercity"
+							value="${usr.city}" type="hidden"> <c:out
+								value="${usr.city}"></c:out><br></td>
 						<td style="text-align: center;"><c:choose>
 								<c:when test="${loginRole.rights[1] == 1 || usr.id == login.id}">
-									<button name="action" formaction="${encodedUpdateUrl}"
+									<button class="btn btn-outline-secondary btn-sm" name="action" formaction="${encodedUpdateUrl}"
 										value="UPDATE" type="submit" formmethod="post">Update</button>
 									<br>
 								</c:when>
 								<c:otherwise>
-									<button name="action" formaction="${encodedUpdateUrl}"
+									<button class="btn btn-outline-secondary btn-sm" name="action" formaction="${encodedUpdateUrl}"
 										value="UPDATE" type="submit" formmethod="post"
 										disabled="disabled">Update</button>
 									<br>
@@ -72,12 +99,12 @@
 							</c:choose></td>
 						<td style="text-align: center;"><c:choose>
 								<c:when test="${loginRole.rights[2] == 1 && usr.roleName != 'Administrator'}">
-									<button name="action" value="DELETE" type="submit"
+									<button class="btn btn-outline-danger btn-sm" name="action" value="DELETE" type="submit"
 										formmethod="post">Delete</button>
 									<br>
 								</c:when>
 								<c:otherwise>
-									<button name="action" value="DELETE" type="submit"
+									<button class="btn btn-outline-danger btn-sm" name="action" value="DELETE" type="submit"
 										formmethod="post" disabled="disabled">Delete</button>
 									<br>
 								</c:otherwise>
@@ -87,20 +114,8 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<form action="${encodedAddUrl}" method=GET>
-		<c:choose>
-			<c:when test="${loginRole.rights[2] == 1}">
-				<p>
-					<button name="Add" value="ADD" type="submit">Add</button>
-				</p>
-			</c:when>
-			<c:otherwise>
-				<p>
-					<button name="Add" value="ADD" type="submit" disabled="disabled">Add</button>
-				</p>
-			</c:otherwise>
-		</c:choose>
-	</form>
+	</div>
+	</div>
 	<footer>
 		<p>SessionId - ${pageContext.session.id}</p>
 	</footer>

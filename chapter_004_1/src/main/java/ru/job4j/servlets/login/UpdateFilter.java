@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet Filter implementation class AddFilter
  */
-public class AddFilter implements Filter {
-	private static Logger log = Logger.getLogger(AddFilter.class.getName());
+public class UpdateFilter implements Filter {
+	private static Logger log = Logger.getLogger(UpdateFilter.class.getName());
 	private final RoleStore roles = RoleStore.getInstance();
 	private final CountiesTree countries = CountiesTree.getInstance();
 
@@ -32,6 +32,8 @@ public class AddFilter implements Filter {
 			response.setContentType("text/plain");
 			response.getWriter().append(countries.getCountry(request.getParameter("getCitiesForThisCountry")).getCitiesInJSON());
 			response.getWriter().flush();
+		} else if (!request.getParameter("usercountry").isEmpty()) {
+			request.setAttribute("citiesList", countries.getCountry(request.getParameter("usercountry")).getCities());
 		}
 		chain.doFilter(request, response);
 	}

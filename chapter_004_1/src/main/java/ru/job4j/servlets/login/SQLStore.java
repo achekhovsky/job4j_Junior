@@ -22,7 +22,7 @@ public class SQLStore implements Store {
 	private SQLStore() {
 		this.source = this.getSource();
 		this.initTable();
-		this.add(new User(1, "Administrator", "admin@mail.ru", "Administrator", "123"));
+		this.add(new User(1, "Administrator", "admin@mail.ru", "", "", "Administrator", "123"));
 	}
 
 	public static SQLStore getInstance() {
@@ -33,13 +33,15 @@ public class SQLStore implements Store {
 	public boolean add(User usr) {
 		try (Connection conn = this.source.getConnection();
 				PreparedStatement stmtU = conn
-						.prepareStatement("INSERT INTO users (id, create_date, name, email) VALUES (?, ?, ?, ?)");
+						.prepareStatement("INSERT INTO users (id, create_date, name, email, country, city) VALUES (?, ?, ?, ?, ?, ?)");
 				PreparedStatement stmtS = conn
 						.prepareStatement("INSERT INTO secure (userId, rolename, password) VALUES (?, ?, ?)");) {
 			stmtU.setInt(1, usr.getId());
 			stmtU.setString(2, usr.getCreateDate().toString());
 			stmtU.setString(3, usr.getName());
 			stmtU.setString(4, usr.getEmail());
+			stmtU.setString(5, usr.getCountry());
+			stmtU.setString(6, usr.getCity());
 			stmtU.executeUpdate();
 			stmtS.setInt(1, usr.getId());
 			stmtS.setString(2, usr.getRoleName());
@@ -54,10 +56,12 @@ public class SQLStore implements Store {
 	@Override
 	public boolean update(User usr) {
 		try (Connection conn = this.source.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("UPDATE users SET name = ?, email = ? WHERE id = ?");) {
+				PreparedStatement stmt = conn.prepareStatement("UPDATE users SET name = ?, email = ?, country = ?, city = ? WHERE id = ?");) {
 			stmt.setString(1, usr.getName());
 			stmt.setString(2, usr.getEmail());
-			stmt.setInt(3, usr.getId());
+			stmt.setString(3, usr.getCountry());
+			stmt.setString(4, usr.getCity());
+			stmt.setInt(5, usr.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			LOG.log(Level.SEVERE, "SQLStore::update", e);
@@ -86,10 +90,10 @@ public class SQLStore implements Store {
 		try (Connection conn = this.source.getConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(
-						"SELECT users.id, users.name, users.email, secure.rolename, secure.password FROM users JOIN secure ON users.id = secure.userId");) {
+						"SELECT users.id, users.name, users.email, users.country, users.city, secure.rolename, secure.password FROM users JOIN secure ON users.id = secure.userId");) {
 			while (rs.next()) {
 				users.add(new User(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
-						rs.getString("roleName"), rs.getString("password")));
+						 rs.getString("country"), rs.getString("city"), rs.getString("roleName"), rs.getString("password")));
 			}
 		} catch (SQLException e) {
 			LOG.log(Level.SEVERE, "SQLStore::findAll", e);
@@ -102,11 +106,11 @@ public class SQLStore implements Store {
 		User usr = null;
 		try (Connection conn = this.source.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(
-						"SELECT users.id, users.name, users.email, secure.rolename, secure.password FROM users JOIN secure ON users.id = secure.userId AND users.id = ?");) {
+						"SELECT users.id, users.name, users.email, users.country, users.city, secure.rolename, secure.password FROM users JOIN secure ON users.id = secure.userId AND users.id = ?");) {
 			stmt.setInt(1, id);
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					usr = new User(id, rs.getString("name"), rs.getString("email"), rs.getString("roleName"), rs.getString("password"));
+					usr = new User(id, rs.getString("name"), rs.getString("email"), rs.getString("country"), rs.getString("city"), rs.getString("roleName"), rs.getString("password"));
 				}
 			}
 		} catch (SQLException e) {
@@ -119,12 +123,12 @@ public class SQLStore implements Store {
 		User usr = null;
 		try (Connection conn = this.source.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(
-						"SELECT users.id, users.name, users.email, secure.rolename, secure.password FROM users JOIN secure ON users.id = secure.userId AND users.name LIKE ? AND secure.password LIKE ?");) {
+						"SELECT users.id, users.name, users.email, users.country, users.city, secure.rolename, secure.password FROM users JOIN secure ON users.id = secure.userId AND users.name LIKE ? AND secure.password LIKE ?");) {
 			stmt.setString(1, name);
 			stmt.setString(2, password);
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					usr = new User(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getString("roleName"), rs.getString("password"));
+					usr = new User(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getString("country"), rs.getString("city"), rs.getString("roleName"), rs.getString("password"));
 				}
 			}
 		} catch (SQLException e) {
@@ -147,7 +151,7 @@ public class SQLStore implements Store {
 	private void initTable() {
 		try (Connection conn = this.source.getConnection(); Statement stmt = conn.createStatement()) {
 			stmt.execute(
-					"CREATE TABLE IF NOT EXISTS users (id integer PRIMARY KEY, create_date text, name varchar(25), email varchar(30), UNIQUE (email))");
+					"CREATE TABLE IF NOT EXISTS users (id integer PRIMARY KEY, create_date text, name varchar(25), email varchar(30), country varchar(25), city varchar(30), UNIQUE (email))");
 			stmt.execute(
 					"CREATE TABLE IF NOT EXISTS secure (id integer PRIMARY KEY AUTOINCREMENT, userId integer, rolename varchar(25), password varchar(30) NOT NULL, UNIQUE (userId), FOREIGN KEY (userId) REFERENCES users (id) ON UPDATE CASCADE)");
 		} catch (Exception e) {

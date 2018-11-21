@@ -22,7 +22,6 @@ public class NotLoggedRedirectFilter implements Filter {
 		HttpServletRequest rqst = (HttpServletRequest) request;
 		HttpServletResponse rpns = (HttpServletResponse) response;
 		if (!rqst.getHttpServletMapping().getServletName().equals("LoginCtrl") && rqst.getSession().getAttribute("login") == null) {
-			System.out.println("!!!!!main");
 			rpns.sendRedirect(rpns.encodeRedirectURL(rqst.getServletContext().getContextPath() + "/"));
 		} else {
 			chain.doFilter(rqst, rpns);
